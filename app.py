@@ -16,12 +16,17 @@ for msg in st.session_state.messages:
         st.write(msg["content"])
 
 def get_openai_response(prompt):
-    """Gets a response from the OpenAI model using the new API."""
+    """
+    Gets a minimal response from a potentially less expensive OpenAI model.
+    """
     try:
-        client = openai.OpenAI()  # Initialize the OpenAI client
+        client = OpenAI()
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}]
+            model="gpt-3.5-turbo-0125",  # A generally efficient and capable model
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=100,  # Limit the output tokens
+            temperature=0.7, # Adjust for more deterministic (lower) or creative (higher) responses
+            n=1             # Request only one response
         )
         return completion.choices[0].message.content
     except openai.OpenAIError as e:
