@@ -1,5 +1,9 @@
 import streamlit as st
 import openai
+import requests
+import pandas as pd
+from openai import OpenAI
+from datetime import datetime, timedelta
 
 st.title("Chat about Crypto Wallets")
 
@@ -49,3 +53,34 @@ if prompt := st.chat_input("Ask about crypto wallets!"):
         message_placeholder.markdown(full_response, unsafe_allow_html=True)
         st.session_state.messages.append({"role": "assistant", "content": full_response})
 
+
+@st.cache_data
+def get_btc_price_history():
+    url = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart"
+    params = {
+        "vs_currency": "usd",
+        "days": "7",  # past 7 days
+        "interval": "daily"
+    }
+    response = requests.get(url, params=params)
+    if response.ok:
+        data = response.json()
+        prices = [
+            {
+                "Date": datetime.fromtimestamp(price[0] / 1000).strftime('%Y-%m-%d'),
+                "Price (USD)": price[1]
+            }
+            for price in data["prices"]
+        ]
+        return pd.DataFrame(prices)
+    else:
+        return pd.DataFrame(columns=["Date", "Price (USD)"])
+
+st.title("📈 Bitcoin Price Trend (Last 7 Days)")
+df = get_btc_price_history()
+
+if df.empty:
+    st.warning("No data available from CoinGecko.")
+else:
+    st.dataframe(df)
+    st.line_chart(df.set_index("Date"))
