@@ -1,0 +1,26 @@
+# https://mermaid.live/edit#pako:eNp1kk1vozAQhv-K5XOSBWMgcFiJbVWJQ8UqbS5rerDChCARG9lG-xHlv69jB9rNpj4gz-vHM6-HOeGdbADnuFV8OKDXx1ogu7Zsq0G9oeXyKyrFMBoXo2fQmrfwxUlvtfCwixxahOxl4KLTh2XRgrggNwBhpTCg-M50UnwGRewb77nYwWcAZa-KC32TxWNF6JhNyKoBRFGi4nuJHnjfoyW6mrsmLIgnyR1yW6KnXv6cyMiT0R3yanUiqSfpHfKD59ntxrut5sahDehBCj0l3HiTFWHW0u2Zt1XN_bI92svp0Dup_ukVejHcjHouX_nyz6BaYEXbKmi5AVSNxv9gx5B35qpE_yn0o-I1Fzj5qRO8Z-47PwEZidyM1QIv7PR1Dc6NGmGBj6CO_BLi0yVRjc0BjlDj3G4b2POxNzWuxdlesy37IeVxuqnk2B5wvue9ttE4NPYtjx23o_2OgGhAPchRGJyTdeBy4PyEf-E8C1ZBGERpRpN1FIdBtsC_LURWGY3iOCY0TOg6PS_wH1czWGWWpmmYREmakjBOzn8B4jX-WQ
+
+graph TD
+    U[User] --> Input[User Message/Input]
+
+    Input --> A1[Spanish-Agent]
+    Input --> A2[Interaction-Agent]
+    Input --> A3[Balance-Agent]
+    Input --> A4[Transaction-Agent]
+
+    A1 --> R1[OpenAI API Call - Spanish]
+    A2 --> R2[OpenAI API Call - UI Flow]
+    A3 --> R3[OpenAI API Call - Balance]
+    A4 --> R4[OpenAI API Call - Transaction]
+
+    R1 --> O1[Spanish Response]
+    R2 --> O2[UI Response]
+    R3 --> O3[Balance Info]
+    R4 --> O4[Transaction Status]
+
+    O1 --> Merge[Aggregate Output]
+    O2 --> Merge
+    O3 --> Merge
+    O4 --> Merge
+
+    Merge --> Final[Final Response to User]
